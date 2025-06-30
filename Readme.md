@@ -2,7 +2,7 @@
 
 When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
 
-The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods.
+[BIG-IP does not have native support for PROXY protocol.](https://my.f5.com/manage/s/article/K40512493). This functionality must be implemented in an iRule.The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods.
 
 ## Why This Matters
 
