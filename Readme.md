@@ -83,7 +83,7 @@ set ::PP_MODE "transform"  # or "transparent" for detection only
 set ::PP_TRANSFORM_RULE "ppv2 => X-Forwarded-For"
 ```
 
-Available transformation rules:
+Example transformation rules:
 - `"ppv1 => X-Forwarded-For"` - Convert PP v1 to HTTP header
 - `"ppv2 => X-Real-IP"` - Convert PP v2 to HTTP header
 - `"X-Forwarded-For => X-Real-IP"` - Convert between HTTP headers
