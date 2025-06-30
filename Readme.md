@@ -1,8 +1,8 @@
 # F5 Proxy Protocol Gateway: Bridging TCP and HTTP Client IP Preservation
 
-When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For. This incompatibility creates operational headaches when you need to integrate systems that speak different "languages" for client IP preservation.
+When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
 
-The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods. It can detect incoming client IP information in one format and transform it to another, making it possible to bridge systems that wouldn't normally work together.
+The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods. It can detect incoming client IP information in one format (TCP proxy protocol version 1 or version 2) and transform it to another (common HTTP headers), making it possible to bridge systems that wouldn't normally work together.
 
 ## Why This Matters
 
