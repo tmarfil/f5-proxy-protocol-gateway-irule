@@ -2,7 +2,7 @@
 
 When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
 
-[BIG-IP does not have native support for PROXY protocol](https://my.f5.com/manage/s/article/K40512493). This functionality must be implemented in an iRule.The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods.
+[BIG-IP does not have native support for PROXY protocol](https://my.f5.com/manage/s/article/K40512493). The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods.
 
 ## Why This Matters
 
@@ -113,6 +113,8 @@ You'll need:
 - A client machine with `netcat` or `socat`
 - Access to the F5 logs (`/var/log/ltm`)
 - A backend web server that echoes headers
+- Standard virtual server must have an HTTP profile applied
+- Standard virtual server with or without an SSL Client profile applied
 
 ### Test 1: Proxy Protocol v1
 
@@ -227,7 +229,7 @@ For high-traffic deployments, consider:
 We'd love to hear about your experience with the Proxy Protocol Gateway:
 
 - **Success stories**: Comment below if the iRule solved your integration challenge
-- **Feature requests, bug reports, or contributions?** [Open an issue on GitHub](https://github.com/tmarfil/f5-proxy-protocol-gateway-irule/issues) 
+- **Feature requests, bug reports, or contributions:** [Open an issue on GitHub](https://github.com/tmarfil/f5-proxy-protocol-gateway-irule/issues) 
 
 ## Conclusion
 
