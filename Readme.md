@@ -41,6 +41,8 @@ Here's the current state of Proxy Protocol support across major cloud providers:
 
 | Cloud Provider | Load Balancer Type | PP v1 | PP v2 | X-Forwarded-For | Notes |
 |----------------|-------------------|-------|-------|-----------------|--------|
+| **F5 Distributed Cloud (XC)** | | | | | |
+| | Load Balancer | ✓ | ✓ | ✓ | Enable proxy protocol for upstream connections |
 | **AWS** | | | | | |
 | | Network Load Balancer (NLB) | ✗ | ✓ | ✗ | Enable proxy protocol v2 on target groups |
 | | Classic Load Balancer (CLB) | ✓ | ✗ | ✓ | PP v1 for TCP listeners, XFF for HTTP listeners |
