@@ -13,7 +13,7 @@ Modern infrastructure often involves multiple layers of load balancing and proxy
 
 Without translation, you lose visibility into the real client IP at some point in this chain. This affects security logging, rate limiting, geolocation, and any feature that depends on knowing the actual client address.
 
-This challenge is similar to what we explored in ["Solving for true-source IP with global load balancers in Google Cloud"](https://example.com/previous-article), where we addressed client IP preservation in multi-tier cloud architectures. The Proxy Protocol Gateway extends this concept by providing flexible transformation between different IP preservation methods.
+This challenge is similar to what we explored in ["Solving for true-source IP with global load balancers in Google Cloud"](https://community.f5.com/kb/technicalarticles/solving-for-true-source-ip-with-global-load-balancers-in-google-cloud/329397), where we addressed client IP preservation in multi-tier cloud architectures. The Proxy Protocol Gateway extends this concept by providing flexible transformation between different IP preservation methods.
 
 ## What the iRule Does
 
