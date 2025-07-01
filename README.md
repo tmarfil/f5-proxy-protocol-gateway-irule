@@ -39,23 +39,32 @@ The F5 Proxy Protocol Gateway iRule provides:
 
 Here's the current state of Proxy Protocol support across major cloud providers:
 
-| Cloud Provider | Load Balancer Type | PP v1 | PP v2 | X-Forwarded-For | Notes |
-|----------------|-------------------|-------|-------|-----------------|--------|
-| **F5 Distributed Cloud (XC)** | | | | | |
-| | Load Balancer | ✓ | ✓ | ✓ | Enable proxy protocol for upstream connections |
-| **AWS** | | | | | |
-| | Network Load Balancer (NLB) | ✗ | ✓ | ✗ | Enable proxy protocol v2 on target groups |
-| | Classic Load Balancer (CLB) | ✓ | ✗ | ✓ | PP v1 for TCP listeners, XFF for HTTP listeners |
-| | Application Load Balancer (ALB) | ✗ | ✗ | ✓ | Layer 7 only, automatically adds XFF headers |
-| **Google Cloud** | | | | | |
-| | External Proxy Network LB (Global) | ✓ | ✗ | ✗ | Enable via target proxy configuration |
-| | External Proxy Network LB (Regional) | ✓ | ✗ | ✗ | TCP traffic only |
-| | External Application LB | ✗ | ✗ | ✓ | Layer 7, automatically adds XFF headers |
-| | Network LB (Pass-through) | ✗ | ✗ | ✗ | Preserves client IP directly |
-| **Azure** | | | | | |
-| | Load Balancer | ✗ | ✗ | ✗ | Layer 4, preserves source IP directly |
-| | Application Gateway | ✗ | ✗ | ✓ | Adds XFF headers for HTTP/HTTPS traffic |
-| | Private Link Service | ✗ | ✓ | ✗ | TCP Proxy v2 support for backend visibility |
+| Cloud Provider | Load Balancer Type | PP v1 | PP v2 | X-Forwarded-For | Notes | Documentation |
+|----------------|-------------------|-------|-------|-----------------|--------|---------------|
+| **F5 Distributed Cloud (XC)** | | | | | | |
+| | Load Balancer | ✓ | ✓ | ✓ | Enable proxy protocol for upstream connections | [TCP LB Feature Request](https://www.f5cloudideas.com/ideas/MESH-I-242), [HTTP LB Feature Request](https://www.f5cloudideas.com/ideas/MESH-I-243) |
+| **AWS** | | | | | | |
+| | Network Load Balancer (NLB) | ✗ | ✓ | ✗ | Enable proxy protocol v2 on target groups | [NLB Proxy Protocol v2 Guide](https://aws.amazon.com/blogs/networking-and-content-delivery/preserving-client-ip-address-with-proxy-protocol-v2-and-network-load-balancer/), [NLB Target Groups](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-target-groups.html) |
+| | Classic Load Balancer (CLB) | ✓ | ✗ | ✓ | PP v1 for TCP listeners, XFF for HTTP listeners | [CLB Proxy Protocol](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html) |
+| | Application Load Balancer (ALB) | ✗ | ✗ | ✓ | Layer 7 only, automatically adds XFF headers | [ALB Overview](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/) |
+| **Azure** | | | | | | |
+| | Load Balancer | ✗ | ✗ | ✗ | Layer 4, preserves source IP directly | [Azure Load Balancer Overview](https://docs.microsoft.com/en-us/azure/load-balancer/load-balancer-overview) |
+| | Application Gateway | ✗ | ✗ | ✓ | Adds XFF headers for HTTP/HTTPS traffic | [Application Gateway Overview](https://docs.microsoft.com/en-us/azure/application-gateway/overview) |
+| | Private Link Service | ✗ | ✓ | ✗ | TCP Proxy v2 support for backend visibility | [Private Link Proxy Protocol](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview#proxy-protocol), [TCP Proxy v2 Deep Dive](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/tcp-proxy-protocol-v2-with-azure-private-link-service-deep-dive/ba-p/3574968) |
+| **Google Cloud** | | | | | | |
+| | External Proxy Network LB (Global) | ✓ | ✗ | ✗ | Enable via target proxy configuration | [Classic Proxy NLB Setup](https://cloud.google.com/load-balancing/docs/tcp/setting-up-tcp#proxy-protocol) |
+| | External Proxy Network LB (Regional) | ✓ | ✗ | ✗ | TCP traffic only | [External Proxy NLB Overview](https://cloud.google.com/load-balancing/docs/tcp/) |
+| | External Application LB | ✗ | ✗ | ✓ | Layer 7, automatically adds XFF headers | [Application LB Overview](https://cloud.google.com/load-balancing/docs/https) |
+| | Network LB (Pass-through) | ✗ | ✗ | ✗ | Preserves client IP directly | [Network LB Overview](https://cloud.google.com/load-balancing/docs/network/) |
+| **Oracle Cloud Infrastructure** | | | | | | |
+| | Network Load Balancer | ✗ | ✓ | ✗ | Enable proxy protocol v2 for TCP listeners | [NLB Proxy Protocol](https://docs.oracle.com/en-us/iaas/Content/NetworkLoadBalancer/NetworkLoadBalancers/network-load-balancer-management.htm#proxy-protocol) |
+| | Load Balancer | ✓ | ✓ | ✓ | Supports both v1 and v2 for TCP listeners | [LB Proxy Protocol](https://docs.oracle.com/en-us/iaas/Content/Balance/Tasks/managingloadbalancer.htm#proxy-protocol) |
+| **Akamai** | | | | | | |
+| | NodeBalancer | ✓ | ✓ | ✗ | Enable for TCP protocol configurations | [NodeBalancer Proxy Protocol](https://techdocs.akamai.com/cloud-computing/docs/using-proxy-protocol-with-nodebalancers) |
+| | Application Load Balancer | ✗ | ✗ | ✓ | Layer 7 load balancing with header support | [ALB Overview](https://techdocs.akamai.com/cloudlets/docs/what-app-load-balancer) |
+| **Cloudflare** | | | | | | |
+| | Load Balancer (Proxied) | ✗ | ✗ | ✓ | Layer 7 proxy automatically adds headers | [LB Proxy Modes](https://developers.cloudflare.com/load-balancing/understand-basics/proxy-modes/) |
+| | Spectrum (Layer 4) | ✗ | ✗ | ✗ | Layer 4 pass-through, preserves client IP | [Spectrum Overview](https://developers.cloudflare.com/spectrum/) |
 
 ## Deployment Guide
 
