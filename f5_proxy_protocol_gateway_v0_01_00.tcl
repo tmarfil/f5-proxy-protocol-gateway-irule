@@ -1,10 +1,8 @@
 # ============================================================================
-# F5 Proxy Protocol Gateway v0.01.01 - FIXED TRANSPARENT MODE
+# F5 Proxy Protocol Gateway v0.01.01
 # ============================================================================
 # This iRule provides bidirectional transformation between TCP Proxy Protocol
 # (v1/v2) and HTTP headers with stealth operation capabilities.
-# 
-# BUG FIX: Transparent mode now correctly avoids all header manipulations
 # ============================================================================
 
 # ============================================================================
@@ -531,7 +529,7 @@ when HTTP_REQUEST {
     }
 
     # ========================================================================
-    # BUG FIX: Only normalize headers in TRANSFORM mode
+    # Header normalization (transform mode only)
     # ========================================================================
     if {$pp_detected && $::PP_NORMALIZE_HEADERS && $::PP_MODE eq "transform"} {
         foreach target $::PP_TARGET_HEADERS {
