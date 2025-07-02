@@ -131,6 +131,12 @@ You'll need:
 
 ### Test 1: Proxy Protocol v1
 
+Configure the rule for ppv1 to X-Forwarded-For header transformation:
+
+```tcl
+set ::PP_TRANSFORM_RULE "ppv1 => X-Forwarded-For"
+```
+
 Send a PP v1 request:
 
 ```bash
@@ -147,25 +153,21 @@ Transformed ppv1 => X-Forwarded-For (value: 192.168.1.100)
 
 ### Test 2: Proxy Protocol v2
 
-For PP v2, use this test script:
+Configure the rule for ppv2 to X-Forwarded-For header transformation:
+
+```tcl
+set ::PP_TRANSFORM_RULE "ppv2 => X-Forwarded-For"
+```
+
+Send a PP v2 request:
 
 ```bash
 #!/bin/bash
-# ppv2_test.sh - Send PP v2 request
-
-# PP v2 signature + header (28 bytes total for IPv4)
-PP_V2_HEADER=$(printf '\x0D\x0A\x0D\x0A\x00\x0D\x0A\x51\x55\x49\x54\x0A')
-PP_V2_HEADER+=$(printf '\x21\x11\x00\x0C')  # v2, PROXY, IPv4, TCP, 12 bytes
-PP_V2_HEADER+=$(printf '\xC0\xA8\x01\x64')  # Source IP: 192.168.1.100
-PP_V2_HEADER+=$(printf '\x0A\x00\x00\x01')  # Dest IP: 10.0.0.1
-PP_V2_HEADER+=$(printf '\xDD\xD5')          # Source port: 56789
-PP_V2_HEADER+=$(printf '\x00\x50')          # Dest port: 80
-
-# HTTP request
-HTTP_REQUEST="GET / HTTP/1.1\r\nHost: example.com\r\n\r\n"
-
-# Send combined payload
-(echo -n "$PP_V2_HEADER"; echo -e "$HTTP_REQUEST") | nc YOUR_F5_VIP 80
+# Single command test
+{
+    printf '\x0D\x0A\x0D\x0A\x00\x0D\x0A\x51\x55\x49\x54\x0A\x21\x11\x00\x0C\xC0\xA8\x01\x64\x0A\x00\x00\x01\x30\x39\x00\x50'
+    printf 'GET / HTTP/1.1\r\nHost: example.com\r\nConnection: close\r\n\r\n'
+} | nc YOUR_F5_VIP 80
 ```
 
 Expected log entry:
