@@ -19,4 +19,6 @@ test/
 tmp/
 *.tmp
 *.temp
+*.cast
 commit-message.md
+contest_submission.md
