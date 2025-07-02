@@ -2,7 +2,7 @@
 
 When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
 
-[BIG-IP does not have native support for PROXY protocol](https://my.f5.com/manage/s/article/K40512493). The F5 Proxy Protocol Gateway iRule solves this by acting as a translator between these different methods.
+[F5 BIG-IP does not have native support for PROXY protocol](https://my.f5.com/manage/s/article/K40512493). I developed the **F5 Proxy Protocol Gateway iRule** so that BIG-IP can receive and correctly interpret TCP Proxy Protocol (v1 or v2), and translate to HTTP headers such as X-Forwarded-For.
 
 ## Why This Matters
 
@@ -13,7 +13,7 @@ Modern infrastructure often involves multiple layers of load balancing and proxy
 
 Without translation, you lose visibility into the real client IP at some point in this chain. This affects security logging, rate limiting, geolocation, and any feature that depends on knowing the actual client address.
 
-This challenge is similar to what we explored in ["Solving for true-source IP with global load balancers in Google Cloud"](https://community.f5.com/kb/technicalarticles/solving-for-true-source-ip-with-global-load-balancers-in-google-cloud/329397), where we addressed client IP preservation in multi-tier cloud architectures. The Proxy Protocol Gateway extends this concept by providing flexible transformation between different IP preservation methods.
+We previously explored this challenge in ["Solving for true-source IP with global load balancers in Google Cloud"](https://community.f5.com/kb/technicalarticles/solving-for-true-source-ip-with-global-load-balancers-in-google-cloud/329397). The F5 Proxy Protocol Gateway iRule solves this problem by providing flexible transformation between different IP preservation methods.
 
 ## What the iRule Does
 
@@ -25,9 +25,9 @@ The F5 Proxy Protocol Gateway iRule provides:
    - HTTP headers (X-Forwarded-For, X-Real-IP, CF-Connecting-IP)
 
 2. **Transformation** between formats:
-   - Proxy Protocol (v1/v2) → HTTP headers
+   - Proxy Protocol (v1/v2) → HTTP header
    - HTTP header → HTTP header
-   - Future: HTTP → Proxy Protocol (see community question below)
+   - _Future: HTTP → Proxy Protocol (see community question below)_
 
 3. **Diagnostic headers** for troubleshooting the transformation process
 
@@ -65,6 +65,8 @@ Here's the current state of Proxy Protocol support across major cloud providers:
 | **Cloudflare** | | | | | | |
 | | Load Balancer (Proxied) | ✗ | ✗ | ✓ | Layer 7 proxy automatically adds headers | [LB Proxy Modes](https://developers.cloudflare.com/load-balancing/understand-basics/proxy-modes/) |
 | | Spectrum (Layer 4) | ✗ | ✗ | ✗ | Layer 4 pass-through, preserves client IP | [Spectrum Overview](https://developers.cloudflare.com/spectrum/) |
+
+If an intermediate network device _does not_ manipulate TCP layer 4 traffic, then Proxy Protocol values _should_ be preserved. For example: layer 3 routers and stateful network firewalls.
 
 ## Deployment Guide
 
@@ -240,7 +242,7 @@ For high-traffic deployments, consider:
 We'd love to hear about your experience with the Proxy Protocol Gateway:
 
 - **Success stories**: Comment below if the iRule solved your integration challenge
-- **Feature requests, bug reports, or contributions:** [Open an issue on GitHub](https://github.com/tmarfil/f5-proxy-protocol-gateway-irule/issues) 
+- **Feature requests, bug reports:** [Open an issue on GitHub](https://github.com/tmarfil/f5-proxy-protocol-gateway-irule/issues) 
 
 ## Conclusion
 
