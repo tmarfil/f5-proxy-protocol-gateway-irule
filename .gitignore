@@ -16,5 +16,7 @@ test/
 *.orig
 
 # Temporary files
+tmp/
 *.tmp
 *.temp
+commit-message.md

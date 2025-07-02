@@ -1,8 +1,10 @@
 # ============================================================================
-# F5 Proxy Protocol Gateway v0.01.00
+# F5 Proxy Protocol Gateway v0.01.01 - FIXED TRANSPARENT MODE
 # ============================================================================
 # This iRule provides bidirectional transformation between TCP Proxy Protocol
 # (v1/v2) and HTTP headers with stealth operation capabilities.
+# 
+# BUG FIX: Transparent mode now correctly avoids all header manipulations
 # ============================================================================
 
 # ============================================================================
@@ -31,7 +33,7 @@ when RULE_INIT {
     # DIAGNOSTIC OPTIONS
     set ::PP_ADD_DIAGNOSTICS 1           ; # Add all diagnostic headers
     set ::PP_LOG_TRANSFORMATIONS 1       ; # Log all transformations
-    set ::PP_NORMALIZE_HEADERS 1         ; # Normalize proxy headers
+    set ::PP_NORMALIZE_HEADERS 1         ; # Normalize proxy headers (ONLY in transform mode)
     
     # PROTOCOL SUPPORT
     set static::allowProxyV1 1             ; # Enable Proxy Protocol v1 support
@@ -90,7 +92,7 @@ when RULE_INIT {
     # ========================================================================
     
     # System initialization
-    set ::IRULE_VERSION "0.01.00"
+    set ::IRULE_VERSION "0.01.01"
     set ::IRULE_NAME "F5_Proxy_Protocol_Gateway"
     
     # Enhanced Transform Rule Parsing
@@ -528,14 +530,16 @@ when HTTP_REQUEST {
         }
     }
 
-    # Normalize headers
-    if {$pp_detected && $::PP_NORMALIZE_HEADERS} {
+    # ========================================================================
+    # BUG FIX: Only normalize headers in TRANSFORM mode
+    # ========================================================================
+    if {$pp_detected && $::PP_NORMALIZE_HEADERS && $::PP_MODE eq "transform"} {
         foreach target $::PP_TARGET_HEADERS {
             HTTP::header replace $target $pp_original_ip
         }
     }
 
-    # TRANSFORMATION LOGIC (Client => Server)
+    # TRANSFORMATION LOGIC (Client => Server) - ONLY in transform mode
     if {$::PP_MODE eq "transform" && $::PP_TRANSFORM_SOURCE ne ""} {
         set transform_source_value ""
         
@@ -574,6 +578,7 @@ when HTTP_REQUEST {
     # DIAGNOSTIC HEADERS FOR BACKEND ECHO
     if {$::PP_ADD_DIAGNOSTICS} {
         HTTP::header insert "X-F5-PP-Mode" $::PP_MODE
+        # Only add transform-specific headers in transform mode when transformation was applied
         if {$::PP_MODE eq "transform" && $static::transform_applied} {
             HTTP::header insert "X-F5-PP-Transform-Source" "$static::transform_detected_source:$static::transform_detected_value"
             HTTP::header insert "X-F5-PP-Transform-Target" "$::PP_TRANSFORM_TARGET:$static::transform_detected_value"
@@ -599,7 +604,7 @@ when HTTP_REQUEST {
 }
 
 when SERVER_CONNECTED {
-    # Handle transformations to PP targets (ppv1/ppv2)
+    # Handle transformations to PP targets (ppv1/ppv2) - ONLY in transform mode
     # Note: Transformations to ppv1/ppv2 are planned for future implementation
     # Current version focuses on HTTP header targets for maximum compatibility
     if {$::PP_MODE eq "transform" && $static::transform_detected_value ne ""} {
