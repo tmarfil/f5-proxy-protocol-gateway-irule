@@ -1,5 +1,5 @@
 # ============================================================================
-# F5 Proxy Protocol Gateway v0.01.01
+# F5 Proxy Protocol Gateway v0.01.00
 # ============================================================================
 # This iRule provides bidirectional transformation between TCP Proxy Protocol
 # (v1/v2) and HTTP headers with stealth operation capabilities.
@@ -90,7 +90,7 @@ when RULE_INIT {
     # ========================================================================
     
     # System initialization
-    set ::IRULE_VERSION "0.01.01"
+    set ::IRULE_VERSION "0.01.00"
     set ::IRULE_NAME "F5_Proxy_Protocol_Gateway"
     
     # Enhanced Transform Rule Parsing
