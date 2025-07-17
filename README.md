@@ -35,7 +35,7 @@ The F5 PROXY Protocol Gateway iRule provides:
    - Transparent mode: Detect and log only
    - Transform mode: Actively convert between formats
 
-## Cloud Load Balancer Proxy Protocol Support
+## Cloud Load Balancer PROXY Protocol Support
 
 Here's the current state of PROXY Protocol support across major cloud providers:
 
