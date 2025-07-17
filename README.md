@@ -1,8 +1,8 @@
 # F5 PROXY Protocol Gateway: Bridging TCP and HTTP Client IP Preservation
 
-When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
+When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP PROXY Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
 
-[F5 BIG-IP does not have native support for PROXY protocol](https://my.f5.com/manage/s/article/K40512493). I developed the **F5 Proxy Protocol Gateway iRule** so that BIG-IP can receive and correctly interpret TCP Proxy Protocol (v1 or v2), and translate to HTTP headers such as X-Forwarded-For.
+[F5 BIG-IP does not have native support for PROXY protocol](https://my.f5.com/manage/s/article/K40512493). I developed the **F5 PROXY Protocol Gateway iRule** so that BIG-IP can receive and correctly interpret TCP PROXY Protocol (v1 or v2), and translate to HTTP headers such as X-Forwarded-For.
 
 ## Why This Matters
 
