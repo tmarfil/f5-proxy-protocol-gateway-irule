@@ -66,7 +66,7 @@ Here's the current state of PROXY Protocol support across major cloud providers:
 | | Load Balancer (Proxied) | ✗ | ✗ | ✓ | Layer 7 proxy automatically adds headers | [LB Proxy Modes](https://developers.cloudflare.com/load-balancing/understand-basics/proxy-modes/) |
 | | Spectrum (Layer 4) | ✗ | ✗ | ✗ | Layer 4 pass-through, preserves client IP | [Spectrum Overview](https://developers.cloudflare.com/spectrum/) |
 
-If an intermediate network device _does not_ manipulate TCP layer 4 traffic, then Proxy Protocol values _should_ be preserved. For example: layer 3 routers and stateful network firewalls.
+If an intermediate network device _does not_ manipulate TCP layer 4 traffic, then PROXY Protocol values _should_ be preserved. For example: layer 3 routers and layer 4 stateful network firewalls.
 
 ## Deployment Guide
 
