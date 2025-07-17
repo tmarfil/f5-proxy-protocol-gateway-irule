@@ -1,4 +1,4 @@
-# F5 Proxy Protocol Gateway: Bridging TCP and HTTP Client IP Preservation
+# F5 PROXY Protocol Gateway: Bridging TCP and HTTP Client IP Preservation
 
 When load balancers and proxies handle traffic, preserving the original client IP address becomes a challenge. Different systems use different methods: some use TCP Proxy Protocol (v1 or v2), others use HTTP headers like X-Forwarded-For.
 
@@ -7,27 +7,27 @@ When load balancers and proxies handle traffic, preserving the original client I
 ## Why This Matters
 
 Modern infrastructure often involves multiple layers of load balancing and proxying. A request might flow through:
-- A cloud provider's network load balancer (using Proxy Protocol)
+- A cloud provider's network load balancer (using PROXY Protocol)
 - Your F5 BIG-IP (expecting HTTP headers)
 - Backend applications (reading specific headers)
 
 Without translation, you lose visibility into the real client IP at some point in this chain. This affects security logging, rate limiting, geolocation, and any feature that depends on knowing the actual client address.
 
-We previously explored this challenge in ["Solving for true-source IP with global load balancers in Google Cloud"](https://community.f5.com/kb/technicalarticles/solving-for-true-source-ip-with-global-load-balancers-in-google-cloud/329397). The F5 Proxy Protocol Gateway iRule solves this problem by providing flexible transformation between different IP preservation methods.
+We previously explored this challenge in ["Solving for true-source IP with global load balancers in Google Cloud"](https://community.f5.com/kb/technicalarticles/solving-for-true-source-ip-with-global-load-balancers-in-google-cloud/329397). The F5 PROXY Protocol Gateway iRule solves this problem by providing flexible transformation between different IP preservation methods.
 
 ## What the iRule Does
 
-The F5 Proxy Protocol Gateway iRule provides:
+The F5 PROXY Protocol Gateway iRule provides:
 
 1. **Detection** of incoming client IP information from:
-   - TCP Proxy Protocol v1 (text-based)
-   - TCP Proxy Protocol v2 (binary format)
+   - TCP PROXY Protocol v1 (text-based)
+   - TCP PROXY Protocol v2 (binary format)
    - HTTP headers (X-Forwarded-For, X-Real-IP, CF-Connecting-IP)
 
 2. **Transformation** between formats:
-   - Proxy Protocol (v1/v2) → HTTP header
+   - PROXY Protocol (v1/v2) → HTTP header
    - HTTP header → HTTP header
-   - _Future: HTTP → Proxy Protocol (see community question below)_
+   - _Future: HTTP → PROXY Protocol (see community question below)_
 
 3. **Diagnostic headers** for troubleshooting the transformation process
 
@@ -37,7 +37,7 @@ The F5 Proxy Protocol Gateway iRule provides:
 
 ## Cloud Load Balancer Proxy Protocol Support
 
-Here's the current state of Proxy Protocol support across major cloud providers:
+Here's the current state of PROXY Protocol support across major cloud providers:
 
 | Cloud Provider | Load Balancer Type | PP v1 | PP v2 | X-Forwarded-For | Notes | Documentation |
 |----------------|-------------------|-------|-------|-----------------|--------|---------------|
@@ -129,7 +129,7 @@ You'll need:
 - Standard virtual server must have an HTTP profile applied
 - Standard virtual server with or without an SSL Client profile applied
 
-### Test 1: Proxy Protocol v1
+### Test 1: PROXY Protocol v1
 
 Configure the rule for ppv1 to X-Forwarded-For header transformation:
 
@@ -151,7 +151,7 @@ PP v1 parsed: 192.168.1.100:56789
 Transformed ppv1 => X-Forwarded-For (value: 192.168.1.100)
 ```
 
-### Test 2: Proxy Protocol v2
+### Test 2: PROXY Protocol v2
 
 Configure the rule for ppv2 to X-Forwarded-For header transformation:
 
@@ -216,12 +216,12 @@ When `PP_ADD_DIAGNOSTICS` is enabled, the iRule adds headers to help troubleshoo
 - `X-F5-PP-Transform-Source`: What was detected
 - `X-F5-PP-Transform-Target`: What it was transformed to
 
-## Community Question: Where Should We Target Proxy Protocol?
+## Community Question: Where Should We Target PROXY Protocol?
 
-The current version transforms *from* Proxy Protocol to HTTP headers, but not the reverse. We're curious about use cases where you'd want to transform *to* Proxy Protocol:
+The current version transforms *from* PROXY Protocol to HTTP headers, but not the reverse. We're curious about use cases where you'd want to transform *to* PROXY Protocol:
 
 - Converting X-Forwarded-For → PP v1/v2 for backend servers that expect it?
-- Chaining F5 with other proxy servers that only accept Proxy Protocol?
+- Chaining F5 with other proxy servers that only accept PROXY Protocol?
 - Integration with specific applications or services?
 
 Share your use cases in the comments!
@@ -241,7 +241,7 @@ For high-traffic deployments, consider:
 
 ## Get Involved
 
-We'd love to hear about your experience with the Proxy Protocol Gateway:
+We'd love to hear about your experience with the PROXY Protocol Gateway:
 
 - **Success stories**: Comment below if the iRule solved your integration challenge
 - **Feature requests, bug reports:** [Open an issue on GitHub](https://github.com/tmarfil/f5-proxy-protocol-gateway-irule/issues) 
